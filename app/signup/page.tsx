@@ -4,12 +4,37 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Cpu, Lock, Mail, User, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { signupSchema, SignupValues } from "@/lib/schemas/auth.schema";
 
 export default function SignupPage() {
+  const form = useForm<SignupValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      fullname: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  function onSubmit(values: SignupValues) {
+    console.log(values);
+    // Add signup logic here
+  }
+
   const benefits = [
     "Unlimited student records",
     "Automated fee management",
@@ -92,69 +117,110 @@ export default function SignupPage() {
             <p className="text-sm text-zinc-500">Get started by filling out the details below.</p>
           </div>
 
-          <div className="space-y-4">
-            <div className="grid gap-2">
-              <Label htmlFor="signup-fullname" className="text-sm font-medium text-zinc-700 cursor-pointer">Full Name</Label>
-              <div className="relative group">
-                <User className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                <Input
-                  id="signup-fullname"
-                  type="text"
-                  placeholder="John Doe"
-                  className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="signup-email" className="text-sm font-medium text-zinc-700 cursor-pointer">Email address</Label>
-              <div className="relative group">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                <Input
-                  id="signup-email"
-                  type="email"
-                  placeholder="m@example.com"
-                  className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="signup-password" title="password" className="text-sm font-medium text-zinc-700 cursor-pointer">Password</Label>
-              <div className="relative group">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                <Input
-                  id="signup-password"
-                  type="password"
-                  placeholder="••••••••"
-                  className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="signup-confirm-password" title="confirm-password" className="text-sm font-medium text-zinc-700 cursor-pointer">Confirm Password</Label>
-              <div className="relative group">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                <Input
-                  id="signup-confirm-password"
-                  type="password"
-                  placeholder="••••••••"
-                  className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                />
-              </div>
-            </div>
-          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="fullname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Full Name</FormLabel>
+                    <FormControl>
+                      <div className="relative group">
+                        <User className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="text"
+                          placeholder="John Doe"
+                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <div className="space-y-4">
-            <Button className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold transition-all group overflow-hidden relative cursor-pointer active:scale-[0.98]">
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                Create Account <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Button>
-            
-            <p className="text-xs text-zinc-500 text-center font-sans">
-              By creating an account, you agree to our <Link href="#" className="underline hover:text-zinc-800 cursor-pointer transition-colors">Terms</Link> and <Link href="#" className="underline hover:text-zinc-800 cursor-pointer transition-colors">Privacy Policy</Link>.
-            </p>
-          </div>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Email address</FormLabel>
+                    <FormControl>
+                      <div className="relative group">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="email"
+                          placeholder="m@example.com"
+                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Password</FormLabel>
+                    <FormControl>
+                      <div className="relative group">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="••••••••"
+                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Confirm Password</FormLabel>
+                    <FormControl>
+                      <div className="relative group">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="••••••••"
+                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="space-y-4 pt-2">
+                <Button type="submit" className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold transition-all group overflow-hidden relative cursor-pointer active:scale-[0.98]">
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    Create Account <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Button>
+                
+                <p className="text-xs text-zinc-500 text-center font-sans">
+                  By creating an account, you agree to our <Link href="#" className="underline hover:text-zinc-800 cursor-pointer transition-colors">Terms</Link> and <Link href="#" className="underline hover:text-zinc-800 cursor-pointer transition-colors">Privacy Policy</Link>.
+                </p>
+              </div>
+            </form>
+          </Form>
 
           <p className="text-center text-sm text-zinc-600">
             Already have an account?{" "}
