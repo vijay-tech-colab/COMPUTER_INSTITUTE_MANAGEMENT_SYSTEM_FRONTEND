@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Providers from "./providers";
 
 // 🔥 Body font (clean + readable)
 const inter = Inter({
@@ -43,7 +44,9 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full bg-gray-50 text-gray-900 font-sans">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { loginSchema, LoginValues } from "@/lib/schemas/auth.schema";
+import { useAuth } from "@/hooks/useAuth.hook";
 
 export default function LoginPage() {
   const form = useForm<LoginValues>({
@@ -30,9 +31,14 @@ export default function LoginPage() {
     },
   });
 
-  function onSubmit(values: LoginValues) {
-    console.log(values);
-    // Add signup logic here
+  const loginMutation = useAuth.useLogin();
+
+  async function onSubmit(values: LoginValues) {
+    try {
+      await loginMutation.mutateAsync(values);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   }
 
 
@@ -174,9 +180,10 @@ export default function LoginPage() {
                 )}
               />
 
-              <Button type="submit" className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold transition-all group overflow-hidden relative cursor-pointer active:scale-[0.98]">
+              <Button disabled={loginMutation.isPending} type="submit" className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold transition-all group overflow-hidden relative cursor-pointer active:scale-[0.98]">
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  Sign in <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  {loginMutation.isPending ? "Signing in..." : "Sign in"}
+                  {!loginMutation.isPending && <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>

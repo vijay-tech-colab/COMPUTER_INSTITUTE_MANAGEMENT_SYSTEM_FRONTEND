@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Cpu, Lock, Mail, User, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Cpu, Lock, Mail, User, ArrowRight, CheckCircle2, Phone, Building2, Image as ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,22 +18,34 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { signupSchema, SignupValues } from "@/lib/schemas/auth.schema";
+import { useAuth } from "@/hooks/useAuth.hook";
 
 export default function SignupPage() {
+  const signupMutation = useAuth.useSignup();
+
   const form = useForm<SignupValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      fullname: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
+      phone: "",
+      branch: "Main Branch",
+      avatar: undefined,
     },
   });
 
-  function onSubmit(values: SignupValues) {
-    console.log(values);
-    // Add signup logic here
+  async function onSubmit(values: SignupValues) {
+    try {
+      await signupMutation.mutateAsync(values);
+    } catch (error) {
+      console.error("Signup failed:", error);
+    }
   }
+
+
+
 
   const benefits = [
     "Unlimited student records",
@@ -107,10 +119,10 @@ export default function SignupPage() {
       {/* Left Side: Signup Form */}
       <div className="flex w-full items-center justify-center p-8 lg:w-1/2">
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.6 }}
-           className="w-full max-w-sm space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-sm space-y-6"
         >
           <div className="space-y-1 text-center lg:text-left">
             <h1 className="text-3xl font-heading font-bold tracking-tight text-zinc-900">Create account</h1>
@@ -119,102 +131,171 @@ export default function SignupPage() {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="fullname"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Full Name</FormLabel>
-                    <FormControl>
-                      <div className="relative group">
-                        <User className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                        <Input
-                          {...field}
-                          type="text"
-                          placeholder="John Doe"
-                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Full Name</FormLabel>
+                      <FormControl>
+                        <div className="relative group">
+                          <User className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="John Doe"
+                            className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Email address</FormLabel>
-                    <FormControl>
-                      <div className="relative group">
-                        <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                        <Input
-                          {...field}
-                          type="email"
-                          placeholder="m@example.com"
-                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Email address</FormLabel>
+                      <FormControl>
+                        <div className="relative group">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Input
+                            {...field}
+                            type="email"
+                            placeholder="m@example.com"
+                            className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Password</FormLabel>
-                    <FormControl>
-                      <div className="relative group">
-                        <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                        <Input
-                          {...field}
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Phone Number</FormLabel>
+                      <FormControl>
+                        <div className="relative group">
+                          <Phone className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Input
+                            {...field}
+                            type="tel"
+                            placeholder="+1 234 567 890"
+                            className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Confirm Password</FormLabel>
-                    <FormControl>
-                      <div className="relative group">
-                        <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                <FormField
+                  control={form.control}
+                  name="branch"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Branch</FormLabel>
+                      <FormControl>
+                        <div className="relative group">
+                          <Building2 className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Main Branch"
+                            className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Password</FormLabel>
+                      <FormControl>
+                        <div className="relative group">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder="••••••••"
+                            className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Confirm</FormLabel>
+                      <FormControl>
+                        <div className="relative group">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder="••••••••"
+                            className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="avatar"
+                  render={({ field: { value, onChange, ...fieldProps } }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Profile Picture</FormLabel>
+                      <FormControl>
                         <Input
-                          {...field}
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-text shadow-sm"
+                          {...fieldProps}
+                          type="file"
+                          accept="image/*"
+                          onChange={(event) =>
+                            onChange(event.target.files && event.target.files.length > 0 ? event.target.files : undefined)
+                          }
+                          className="h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-pointer shadow-sm pt-2 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                         />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <div className="space-y-4 pt-2">
-                <Button type="submit" className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold transition-all group overflow-hidden relative cursor-pointer active:scale-[0.98]">
+                <Button disabled={signupMutation.isPending} type="submit" className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold transition-all group overflow-hidden relative cursor-pointer active:scale-[0.98]">
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                    Create Account <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    {signupMutation.isPending ? "Creating Account..." : "Create Account"}
+                    {!signupMutation.isPending && <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
-                
+
                 <p className="text-xs text-zinc-500 text-center font-sans">
                   By creating an account, you agree to our <Link href="#" className="underline hover:text-zinc-800 cursor-pointer transition-colors">Terms</Link> and <Link href="#" className="underline hover:text-zinc-800 cursor-pointer transition-colors">Privacy Policy</Link>.
                 </p>
