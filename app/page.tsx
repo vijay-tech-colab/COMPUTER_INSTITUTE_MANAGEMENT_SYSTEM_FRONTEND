@@ -1,11 +1,25 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Cpu, ArrowRight, Shield, Zap, BarChart3, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Page() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/dashboard");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
   const features = [
     { icon: Zap, title: "Lighting Fast", description: "Optimized for speed and efficiency." },
     { icon: Shield, title: "Secure", description: "Enterprise-grade security for your data." },
@@ -13,13 +27,24 @@ export default function Page() {
     { icon: Globe, title: "Cloud Ready", description: "Access from anywhere, anytime." },
   ];
 
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+          <p className="text-sm font-medium text-zinc-500 animate-pulse">Initializing CIMS...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 font-sans">
       {/* Navbar */}
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/80 backdrop-blur-md">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-8">
           <Link href="/" className="flex items-center gap-2 cursor-pointer group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 transition-transform group-hover:scale-105">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary transition-transform group-hover:scale-105">
               <Cpu className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-heading font-bold tracking-tight text-zinc-900">CIMS</span>
@@ -49,7 +74,7 @@ export default function Page() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600"
+                className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
               >
                 Now in Private Beta
               </motion.div>
@@ -59,7 +84,7 @@ export default function Page() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="mt-6 max-w-3xl text-4xl font-heading font-extrabold tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl"
               >
-                Manage your <span className="text-blue-600">Institute</span> like a Pro.
+                Manage your <span className="text-primary">Institute</span> like a Pro.
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -90,7 +115,7 @@ export default function Page() {
           </div>
 
           {/* Decorative Background Elements */}
-          <div className="absolute top-1/2 left-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100 blur-[120px] opacity-40 pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -z-10 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[120px] opacity-40 pointer-events-none" />
         </section>
 
         {/* Features Section */}
@@ -106,7 +131,7 @@ export default function Page() {
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="group relative flex flex-col items-center rounded-2xl border border-zinc-100 bg-zinc-50/50 p-8 text-center transition-all hover:bg-white hover:shadow-xl hover:shadow-zinc-200/50 cursor-default"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm transition-all group-hover:bg-blue-600 group-hover:text-white">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-primary shadow-sm transition-all group-hover:bg-primary group-hover:text-white">
                     <feature.icon className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-xl font-heading font-bold text-zinc-900">{feature.title}</h3>

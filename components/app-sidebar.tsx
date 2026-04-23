@@ -19,6 +19,7 @@ import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
+import { useAuthContext } from "@/context/AuthContext"
 import {
   Sidebar,
   SidebarContent,
@@ -174,17 +175,33 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuthContext();
+
+  const activeUser = {
+    name: user?.name || "Loading...",
+    email: user?.email || "...",
+    avatar: user?.avatar?.url || "/avatars/shadcn.jpg",
+  };
+
+  const teams = [
+    {
+      name: "CIMS Institute",
+      logo: Building2,
+      plan: user?.branch?.name || "Main Branch",
+    },
+  ];
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={activeUser} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

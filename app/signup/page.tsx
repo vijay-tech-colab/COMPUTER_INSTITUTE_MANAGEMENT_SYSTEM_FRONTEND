@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -21,6 +23,8 @@ import { signupSchema, SignupValues } from "@/lib/schemas/auth.schema";
 import { useAuth } from "@/hooks/useAuth.hook";
 
 export default function SignupPage() {
+  const router = useRouter();
+
   const signupMutation = useAuth.useSignup();
 
   const form = useForm<SignupValues>({
@@ -43,9 +47,6 @@ export default function SignupPage() {
       console.error("Signup failed:", error);
     }
   }
-
-
-
 
   const benefits = [
     "Unlimited student records",
@@ -74,7 +75,7 @@ export default function SignupPage() {
         </div>
 
         <div className="relative z-20 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-500/20">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-blue-500/20">
             <Cpu className="h-6 w-6 text-white" />
           </div>
           <span className="text-2xl font-bold tracking-tight">CIMS</span>
@@ -88,7 +89,7 @@ export default function SignupPage() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-4xl font-heading font-bold leading-tight"
             >
-              Start your <span className="text-blue-500">Journey</span> today.
+              Start your <span className="text-primary/80">Journey</span> today.
             </motion.h2>
             <p className="max-w-md text-base text-zinc-400 font-sans">
               Join hundreds of institutes already scaling their operations with our world-class management system.
@@ -104,7 +105,7 @@ export default function SignupPage() {
                 transition={{ delay: 0.6 + (i * 0.1), duration: 0.5 }}
                 className="flex items-center gap-3 text-zinc-300 font-sans"
               >
-                <CheckCircle2 className="h-5 w-5 text-blue-500" />
+                <CheckCircle2 className="h-5 w-5 text-primary/80" />
                 <span>{benefit}</span>
               </motion.li>
             ))}
@@ -140,7 +141,7 @@ export default function SignupPage() {
                       <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Full Name</FormLabel>
                       <FormControl>
                         <div className="relative group">
-                          <User className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <User className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none z-10" />
                           <Input
                             {...field}
                             type="text"
@@ -162,7 +163,7 @@ export default function SignupPage() {
                       <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Email address</FormLabel>
                       <FormControl>
                         <div className="relative group">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none z-10" />
                           <Input
                             {...field}
                             type="email"
@@ -184,7 +185,7 @@ export default function SignupPage() {
                       <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Phone Number</FormLabel>
                       <FormControl>
                         <div className="relative group">
-                          <Phone className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Phone className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none z-10" />
                           <Input
                             {...field}
                             type="tel"
@@ -206,7 +207,7 @@ export default function SignupPage() {
                       <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Branch</FormLabel>
                       <FormControl>
                         <div className="relative group">
-                          <Building2 className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Building2 className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none z-10" />
                           <Input
                             {...field}
                             type="text"
@@ -228,7 +229,7 @@ export default function SignupPage() {
                       <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Password</FormLabel>
                       <FormControl>
                         <div className="relative group">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none z-10" />
                           <Input
                             {...field}
                             type="password"
@@ -250,7 +251,7 @@ export default function SignupPage() {
                       <FormLabel className="text-sm font-medium text-zinc-700 cursor-pointer">Confirm</FormLabel>
                       <FormControl>
                         <div className="relative group">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none z-10" />
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none z-10" />
                           <Input
                             {...field}
                             type="password"
@@ -278,7 +279,7 @@ export default function SignupPage() {
                           onChange={(event) =>
                             onChange(event.target.files && event.target.files.length > 0 ? event.target.files : undefined)
                           }
-                          className="h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-pointer shadow-sm pt-2 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                          className="h-11 bg-white border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all cursor-pointer shadow-sm pt-2 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-blue-700 hover:file:bg-blue-100"
                         />
                       </FormControl>
                       <FormMessage />
@@ -305,7 +306,7 @@ export default function SignupPage() {
 
           <p className="text-center text-sm text-zinc-600">
             Already have an account?{" "}
-            <Link href="/login" className="font-semibold text-blue-600 hover:text-blue-500 underline-offset-4 hover:underline cursor-pointer">
+            <Link href="/login" className="font-semibold text-primary hover:text-blue-500 underline-offset-4 hover:underline cursor-pointer">
               Sign in here
             </Link>
           </p>

@@ -114,7 +114,61 @@
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* 🎨 Multicolor Themes */
+
+[data-theme='blue'] {
+  --primary: oklch(0.588 0.158 241.966);
+  --sidebar-primary: oklch(0.588 0.158 241.966);
+  --sidebar-accent: oklch(0.588 0.158 241.966 / 0.1);
+  --sidebar-accent-foreground: oklch(0.588 0.158 241.966);
+  --ring: oklch(0.588 0.158 241.966 / 0.5);
+}
+
+[data-theme='purple'] {
+  --primary: oklch(0.514 0.222 284.14);
+  --sidebar-primary: oklch(0.514 0.222 284.14);
+  --sidebar-accent: oklch(0.514 0.222 284.14 / 0.1);
+  --sidebar-accent-foreground: oklch(0.514 0.222 284.14);
+  --ring: oklch(0.514 0.222 284.14 / 0.5);
+}
+
+[data-theme='green'] {
+  --primary: oklch(0.672 0.219 146.94);
+  --sidebar-primary: oklch(0.672 0.219 146.94);
+  --sidebar-accent: oklch(0.672 0.219 146.94 / 0.1);
+  --sidebar-accent-foreground: oklch(0.672 0.219 146.94);
+  --ring: oklch(0.672 0.219 146.94 / 0.5);
+}
+
+[data-theme='orange'] {
+  --primary: oklch(0.648 0.2 46.18);
+  --sidebar-primary: oklch(0.648 0.2 46.18);
+  --sidebar-accent: oklch(0.648 0.2 46.18 / 0.1);
+  --sidebar-accent-foreground: oklch(0.648 0.2 46.18);
+  --ring: oklch(0.648 0.2 46.18 / 0.5);
+}
+
+[data-theme='red'] {
+  --primary: oklch(0.609 0.218 20.36);
+  --sidebar-primary: oklch(0.609 0.218 20.36);
+  --sidebar-accent: oklch(0.609 0.218 20.36 / 0.1);
+  --sidebar-accent-foreground: oklch(0.609 0.218 20.36);
+  --ring: oklch(0.609 0.218 20.36 / 0.5);
+}
+
+/* Glass Effects Toggle */
+html:not([data-glass='true']) * {
+  backdrop-filter: none !important;
+  --tw-backdrop-blur: none !important;
+}
+
+html:not([data-glass='true']) .bg-card\/40,
+html:not([data-glass='true']) .bg-card\/50 {
+  background-color: var(--card) !important;
 }
 
 @layer base {

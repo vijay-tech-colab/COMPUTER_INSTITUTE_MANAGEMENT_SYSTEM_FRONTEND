@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -22,6 +24,8 @@ import { loginSchema, LoginValues } from "@/lib/schemas/auth.schema";
 import { useAuth } from "@/hooks/useAuth.hook";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -40,7 +44,6 @@ export default function LoginPage() {
       console.error("Login failed:", error);
     }
   }
-
 
   return (
     <div className="flex min-h-screen w-full bg-slate-50 overflow-hidden">
@@ -62,7 +65,7 @@ export default function LoginPage() {
         </div>
 
         <div className="relative z-20 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-500/20">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-blue-500/20">
             <Cpu className="h-6 w-6 text-white" />
           </div>
           <span className="text-2xl font-bold tracking-tight">CIMS</span>
@@ -75,7 +78,7 @@ export default function LoginPage() {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="text-4xl font-heading font-bold leading-tight"
           >
-            Empowering the <span className="text-blue-500">Next Generation</span> of Tech Leaders.
+            Empowering the <span className="text-primary/80">Next Generation</span> of Tech Leaders.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -120,7 +123,7 @@ export default function LoginPage() {
                     <FormLabel className="text-zinc-700 cursor-pointer">Email address</FormLabel>
                     <FormControl>
                       <div className="relative group">
-                        <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none" />
                         <Input
                           {...field}
                           type="email"
@@ -141,13 +144,13 @@ export default function LoginPage() {
                   <FormItem>
                     <div className="flex items-center justify-between">
                       <FormLabel className="text-zinc-700 cursor-pointer">Password</FormLabel>
-                      <Link href="#" className="text-sm font-medium text-blue-600 hover:text-blue-500 cursor-pointer transition-colors underline-offset-4 hover:underline">
+                      <Link href="#" className="text-sm font-medium text-primary hover:text-primary/80 cursor-pointer transition-colors underline-offset-4 hover:underline">
                         Forgot password?
                       </Link>
                     </div>
                     <FormControl>
                       <div className="relative group">
-                        <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-zinc-400 group-focus-within:text-primary/80 transition-colors pointer-events-none" />
                         <Input
                           {...field}
                           type="password"
@@ -170,7 +173,7 @@ export default function LoginPage() {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="border-zinc-300 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 cursor-pointer"
+                        className="border-zinc-300 data-[state=checked]:bg-primary data-[state=checked]:border-blue-600 cursor-pointer"
                       />
                     </FormControl>
                     <FormLabel className="text-sm font-normal text-zinc-600 cursor-pointer select-none">
@@ -201,7 +204,7 @@ export default function LoginPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <Button variant="outline" className="h-11 border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 cursor-pointer transition-all active:scale-[0.98]">
-              <Lightbulb className="mr-2 h-4 w-4 text-blue-500" /> Google
+              <Lightbulb className="mr-2 h-4 w-4 text-primary/80" /> Google
             </Button>
             <Button variant="outline" className="h-11 border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 cursor-pointer transition-all active:scale-[0.98]">
               <Home className="mr-2 h-4 w-4 text-zinc-700" /> GitHub
@@ -210,7 +213,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-zinc-600">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-500 underline-offset-4 hover:underline cursor-pointer">
+            <Link href="/signup" className="font-semibold text-primary hover:text-primary/80 underline-offset-4 hover:underline cursor-pointer">
               Sign up for free
             </Link>
           </p>
