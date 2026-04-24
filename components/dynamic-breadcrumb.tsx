@@ -43,7 +43,12 @@ export function DynamicBreadcrumb() {
           const href = `/${paths.slice(0, index + 1).join("/")}`
           const isLast = index === paths.length - 1
           
-          const title = path.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+          let title = path.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+
+          // Detect MongoDB ObjectIDs and replace with "Details"
+          if (/^[0-9a-fA-F]{24}$/.test(path)) {
+            title = "Details"
+          }
 
           return (
             <React.Fragment key={path}>
